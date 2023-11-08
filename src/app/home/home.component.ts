@@ -8,12 +8,12 @@ import { Postslist } from '../postslist';
   standalone: true,
   imports: [CommonModule, PostsListComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
   readonly baseUrl = 'https://angular.dev/assets/tutorials/common';
 
-  housingLocation: Postslist = {
+  postsList: Postslist = {
     id: 9999,
     name: 'Test Home',
     city: 'Test city',
