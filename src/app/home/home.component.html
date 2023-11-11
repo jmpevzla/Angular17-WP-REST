@@ -5,5 +5,7 @@
   </form>
 </section>
 <section class="results">
-  <app-posts-list [postsList]="postsList"></app-posts-list>
+  <app-post-list
+    *ngFor="let postList of postsList"
+    [postList]="postList"></app-post-list>
 </section>

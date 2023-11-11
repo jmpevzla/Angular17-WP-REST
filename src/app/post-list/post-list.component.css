@@ -1,4 +1,4 @@
-.listing {
+.listing div {
   background: var(--accent-color);
   border-radius: 30px;
   padding-bottom: 30px;
@@ -20,11 +20,18 @@
   content: url("/assets/location-pin.svg") / "";
 }
 section.listing a {
-  padding-left: 20px;
+  width: 100%;
+  display: inline-block;
+  /*padding-left: 20px;*/
   text-decoration: none;
   color: var(--primary-color);
+  transform: scale(1);
+  transition: transform 0.25s ease-in-out;
 }
-section.listing a::after {
-  content: "\203A";
-  margin-left: 5px;
+section.listing a:hover {
+  transform: scale(1.05);
 }
+section.listing a:hover div {
+  box-shadow: 4px 4px 2px #cccccc;
+}
+

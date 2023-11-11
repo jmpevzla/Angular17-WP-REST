@@ -1,4 +1,4 @@
-export interface Postslist {
+export interface Postlist {
   id: number;
   name: string;
   city: string;
