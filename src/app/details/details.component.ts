@@ -23,8 +23,10 @@ export class DetailsComponent {
   });
 
   constructor() {
-    const postId = Number(this.route.snapshot.params['id']);
-    this.postList = this.postsService.getPostById(postId);
+    const postId = parseInt(this.route.snapshot.params['id'], 10);
+    this.postsService.getPostById(postId).subscribe(postList => {
+      this.postList = postList;
+    });
   }
 
   submitApplication() {

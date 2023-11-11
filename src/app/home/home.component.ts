@@ -18,8 +18,14 @@ export class HomeComponent {
   postsHidden: Boolean = false;
 
   constructor() {
-    this.postsList = this.postsService.getAllPosts();
-    this.filteredPostsList = this.postsList;
+    // this.postsService.getAllPosts().then(postList => {
+    //   this.postsList = postList;
+    //   this.filteredPostsList = postList;
+    // });
+    this.postsService.getAllPosts().subscribe(postsList => {
+      this.postsList = postsList;
+      this.filteredPostsList = postsList;
+    });
   }
 
   filterResults(text: string, $event: Event) {
