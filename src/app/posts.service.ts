@@ -120,4 +120,10 @@ export class PostsService {
   getPostById(id: number): Postlist | undefined {
     return this.postsList.find((post) => post.id === id);
   }
+
+  submitApplication(firstName: string, lastName: string, email: string) {
+    console.log(
+      `Homes application received: firstName: ${firstName}, lastName: ${lastName}, email: ${email}.`,
+    );
+  }
 }

@@ -1,5 +1,5 @@
 .listing-photo {
-  height: 500px;
+  height: 725px;
   width: 50%;
   object-fit: cover;
   border-radius: 30px;
@@ -53,6 +53,17 @@ input {
   border-right: none;
   border-left: none;
   border-bottom: solid .3px;
+  margin-top: 5px;
+}
+input:focus {
+  outline: solid 2px var(--primary-color);
+}
+button {
+  margin: 10px;
+  width: 400px;
+  font-weight: bold;
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
 }
 @media (max-width: 1024px) {
   .listing-photo {
