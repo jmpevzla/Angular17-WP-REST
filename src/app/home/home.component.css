@@ -39,6 +39,11 @@ button {
   font-size: 1.12em;
 }
 
+.post-hidden {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
 @media (min-width: 500px) and (max-width: 768px) {
   .results {
       grid-template-columns: repeat(2, 1fr);

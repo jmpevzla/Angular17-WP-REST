@@ -1,11 +1,12 @@
 <section class="search">
-  <form>
-    <input type="text" placeholder="Filtrar por titulo" />
-    <button class="primary" type="button">Buscar</button>
+  <form (submit)="filterResults(filter.value, $event)">
+    <input type="text" placeholder="Filtrar por ciudad" #filter />
+    <button class="primary" type="submit">Buscar</button>
   </form>
 </section>
 <section class="results">
   <app-post-list
-    *ngFor="let postList of postsList"
+    [ngClass]="{'post-hidden': postsHidden}"
+    *ngFor="let postList of filteredPostsList"
     [postList]="postList"></app-post-list>
 </section>
