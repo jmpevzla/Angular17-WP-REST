@@ -33,13 +33,13 @@ export class HomeComponent {
     this.postsHidden = true;
 
     let temp: Postlist[] = [];
-    if (!text) {
-      temp = this.postsList;
-    } else {
-      temp = this.postsList.filter((postList) =>
-        postList?.city.toLowerCase().includes(text.toLowerCase()),
-      );
-    }
+    // if (!text) {
+    //   temp = this.postsList;
+    // } else {
+    //   temp = this.postsList.filter((postList) =>
+    //     postList?.city.toLowerCase().includes(text.toLowerCase()),
+    //   );
+    // }
 
     setTimeout(() => {
       this.postsHidden = false;

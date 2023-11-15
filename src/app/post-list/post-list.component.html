@@ -3,12 +3,21 @@
     <div>
       <img
         class="listing-photo"
-        [src]="postList.photo"
-        alt="Exterior photo of {{ postList.name }}"
+        src="https://source.unsplash.com/random/250×250?{{ postList.title.replaceAll(' ', '%20') }}"
+        alt="foto destacada de {{ postList.title }}"
         crossorigin
       />
-      <h2 class="listing-heading">{{ postList.name }}</h2>
-      <p class="listing-location">{{ postList.city }}, {{ postList.state }}</p>
+      <h2 class="listing-heading">{{ postList.title }}</h2>
+      <p class="listing-content" [innerHTML]="postList.content"></p>
+      <p class="listing-info">
+        <i class="em em-memo" aria-role="presentation" aria-label="MEMO"></i>
+        <span>{{ postList.author }}</span>
+      </p>
+      <p class="listing-info">
+        <i class="em em-date" aria-role="presentation" aria-label="CALENDAR"></i>
+        <span>{{ postList.date }}</span>
+      </p>
+
     </div>
   </a>
 </section>
