@@ -1,8 +1,29 @@
 <section class="search">
   <form (submit)="filterResults(filter.value, $event)">
-    <input type="text" placeholder="Filtrar por ciudad" #filter />
-    <button class="primary" type="submit">Buscar</button>
+    <div class="query">
+      <input type="text" placeholder="Filtrar por posts" #filter />
+      <button class="primary" type="submit">Buscar</button>
+    </div>
+    <div class="num-posts">
+      <div>
+        <input type="radio" id="radio12" name="radioGroup" value="1" checked>
+        <label for="radio12">12</label>
+      </div>
+
+      <div>
+        <input type="radio" id="radio24" name="radioGroup" value="2">
+        <label for="radio24">24</label>
+      </div>
+
+      <div>
+        <input type="radio" id="radio36" name="radioGroup" value="3">
+        <label for="radio36">36</label>
+      </div>
+
+      <span>Posts</span>
+    </div>
   </form>
+
 </section>
 <section class="results">
   <app-post-list

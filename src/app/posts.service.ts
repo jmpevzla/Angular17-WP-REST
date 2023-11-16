@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from  '@angular/common/http';
 import { switchMap, map } from 'rxjs/operators';
-import { Observable, forkJoin } from 'rxjs'
+import { Observable, forkJoin, catchError, EMPTY, defaultIfEmpty } from 'rxjs'
 import { Postlist, WPPost } from './postlist';
 
 @Injectable({
@@ -15,7 +15,8 @@ export class PostsService {
 
   readonly baseUrl = 'https://angular.dev/assets/tutorials/common';
   //url = 'http://localhost:3000/locations';
-  url = 'http://localhost/words/index.php/wp-json';
+  url = 'https://localhost/words/index.php/wp-json';
+  photoDefault = 'https://images.unsplash.com/photo-1597613261732-344e083d25e5?q=90&w=400&auto=format&fit=crop'
 
   private formatDate(date: Date) {
     let d = new Date(date),
@@ -45,8 +46,9 @@ export class PostsService {
     return str.split(' ').slice(0, 10).join(' ') + '...';
   }
 
-  getAllPosts(): Observable<Postlist[]> {
-    return this.http.get<WPPost[]>(this.url + '/wp/v2/posts?_fields=id,title,author,content,date&per_page=3&order=desc&orderby=date')
+  getAllPosts(filter = '', num_posts = 12): Observable<Postlist[]> {
+    return this.http.get<WPPost[]>(this.url
+      + `/wp/v2/posts?search=${filter}&_fields=id,title,author,content,featured_media,date&per_page=${num_posts}&order=desc&orderby=date`)
       .pipe(
         switchMap((posts: WPPost[]) => {
 
@@ -56,19 +58,39 @@ export class PostsService {
               title: post.title.rendered,
               content: this.getFirstWords(this.stripHtmlTags(post.content.rendered)),
               author: '',
+              photo: this.photoDefault,
               date: this.formatDate(new Date(post.date)),
             }
 
-            return this.http.get(this.url + `/wp/v2/users/${post.author}?_fields=name`)
+            const authorRequest = this.http.get(this.url + `/wp/v2/users/${post.author}?_fields=name`)
             .pipe(
               map((author: any) => {
-                data.author = author['name'];
-                return data;
+                data.author = author.name;
               })
             );
+
+            let photoRequest: Observable<void | null> = EMPTY.pipe(defaultIfEmpty(null))
+            if (post.featured_media > 0) {
+              photoRequest = this.http.get(this.url + `/wp/v2/media/${post.featured_media}?_fields=source_url`)
+              .pipe(
+                map((media: any) => {
+                  data.photo = media.source_url;
+                })
+              );
+            }
+
+            return forkJoin([authorRequest, photoRequest]).pipe(
+              map(() => data)
+            );
+
           });
 
           return forkJoin(results);
+        })
+      ).pipe(
+        catchError((err: any) => {
+          console.log(err)
+          return [];
         })
       );
   }

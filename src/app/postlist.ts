@@ -10,21 +10,23 @@
 // }
 
 export interface Postlist {
-  id: Number;
+  id: number;
   title: string;
   content: string;
   author: string;
   date: string;
+  photo: string;
 }
 
 export interface WPPost {
-  id: Number;
+  id: number;
   title: {
     rendered: string;
   },
   content: {
     rendered: string;
   }
-  author: Number;
+  author: number;
   date: string;
+  featured_media: number;
 }

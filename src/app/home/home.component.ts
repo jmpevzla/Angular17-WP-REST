@@ -12,38 +12,41 @@ import { PostsService } from '../posts.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  postsList: Postlist[] = [];
   postsService: PostsService = inject(PostsService);
   filteredPostsList: Postlist[] = [];
   postsHidden: Boolean = false;
 
   constructor() {
-    // this.postsService.getAllPosts().then(postList => {
-    //   this.postsList = postList;
-    //   this.filteredPostsList = postList;
-    // });
     this.postsService.getAllPosts().subscribe(postsList => {
-      this.postsList = postsList;
       this.filteredPostsList = postsList;
     });
   }
 
   filterResults(text: string, $event: Event) {
     $event.preventDefault();
+
+    let numPosts = 12;
+    const formData = new FormData($event.target as HTMLFormElement);
+    const value = formData.get('radioGroup');
+
+    switch(value) {
+      case '1':
+        numPosts = 12;
+        break;
+      case '2':
+        numPosts = 24;
+        break;
+      case '3':
+        numPosts = 36;
+        break;
+    }
+
     this.postsHidden = true;
 
-    let temp: Postlist[] = [];
-    // if (!text) {
-    //   temp = this.postsList;
-    // } else {
-    //   temp = this.postsList.filter((postList) =>
-    //     postList?.city.toLowerCase().includes(text.toLowerCase()),
-    //   );
-    // }
-
-    setTimeout(() => {
+    this.postsService.getAllPosts(text, numPosts).subscribe(postsList => {
       this.postsHidden = false;
-      this.filteredPostsList = temp;
-    }, 500);
+      this.filteredPostsList = postsList;
+    });
+
   }
 }

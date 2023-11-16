@@ -8,8 +8,33 @@
 }
 .search form {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.search form .query {
+  width: 100%;
+  display: flex;
   justify-content: center;
   flex-direction: row;
+}
+.search form .num-posts {
+  margin-top: 15px;
+}
+
+.num-posts div {
+  display: inline;
+  margin: 10px;
+}
+
+.num-posts div input[type="radio"] {
+  margin-right: 5px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.num-posts div label {
+  cursor: pointer;
 }
 
 input[type="text"] {
