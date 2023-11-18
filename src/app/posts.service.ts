@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from  '@angular/common/http';
 import { switchMap, map } from 'rxjs/operators';
-import { Observable, forkJoin, catchError, EMPTY, defaultIfEmpty } from 'rxjs'
+import { Observable, forkJoin, catchError
+  , EMPTY, defaultIfEmpty, of } from 'rxjs'
 import { Postlist, WPPost } from './postlist';
 
 @Injectable({
@@ -32,6 +33,12 @@ export class PostsService {
     return [day, month, year].join('-');
   }
 
+  private formatFullDate(date: Date) {
+    let options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+
+    return date.toLocaleDateString("en-US", options);
+  }
+
   private stripHtmlTags(str: string) {
     if ((str === null) || (str === '')) {
       return '';
@@ -48,13 +55,14 @@ export class PostsService {
 
   getAllPosts(filter = '', num_posts = 12): Observable<Postlist[]> {
     return this.http.get<WPPost[]>(this.url
-      + `/wp/v2/posts?search=${filter}&_fields=id,title,author,content,featured_media,date&per_page=${num_posts}&order=desc&orderby=date`)
+      + `/wp/v2/posts?search=${filter}&_fields=id,slug,title,author,content,featured_media,date&status=publish&per_page=${num_posts}&order=desc&orderby=date`)
       .pipe(
         switchMap((posts: WPPost[]) => {
 
           const results = posts.map(post => {
             const data: Postlist = {
               id: post.id,
+              slug: post.slug,
               title: post.title.rendered,
               content: this.getFirstWords(this.stripHtmlTags(post.content.rendered)),
               author: '',
@@ -95,14 +103,46 @@ export class PostsService {
       );
   }
 
-  getPostById(id: number): Observable<Postlist | undefined> {
-    return this.http.get<Postlist>(`${this.url}/${id}`)
+  getPostBySlug(slug: string): Observable<Postlist | undefined> {
+    return this.http.get<WPPost[]>(this.url + `/wp/v2/posts?slug=${slug}&_fields=id,slug,title,author,content,featured_media,date`)
       .pipe(
-        map(post => {
-          return {
-            ...post,
-            //photo: `${this.baseUrl}/${post.photo}`,
+        switchMap((posts: WPPost[]) => {
+          if (posts.length == 0) {
+            of(undefined)
           }
+
+          const post = posts[0];
+          const data: Postlist = {
+            id: post.id,
+            slug: post.slug,
+            title: post.title.rendered,
+            content: post.content.rendered,
+            author: '',
+            photo: this.photoDefault,
+            date: this.formatFullDate(new Date(post.date)),
+          }
+
+          const authorRequest = this.http.get(this.url + `/wp/v2/users/${post.author}?_fields=name,avatar_urls`)
+            .pipe(
+              map((author: any) => {
+                data.author = author.name;
+                data.author_photo = author.avatar_urls['96'];
+              })
+            );
+
+          let photoRequest: Observable<void | null> = EMPTY.pipe(defaultIfEmpty(null))
+          if (post.featured_media > 0) {
+            photoRequest = this.http.get(this.url + `/wp/v2/media/${post.featured_media}?_fields=source_url`)
+            .pipe(
+              map((media: any) => {
+                data.photo = media.source_url;
+              })
+            );
+          }
+
+          return forkJoin([authorRequest, photoRequest]).pipe(
+            map(() => data)
+          );
         })
       );
   }

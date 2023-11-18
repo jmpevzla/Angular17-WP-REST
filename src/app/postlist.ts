@@ -11,15 +11,18 @@
 
 export interface Postlist {
   id: number;
+  slug: string;
   title: string;
   content: string;
   author: string;
+  author_photo?: string;
   date: string;
   photo: string;
 }
 
 export interface WPPost {
   id: number;
+  slug: string;
   title: {
     rendered: string;
   },

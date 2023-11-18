@@ -25,12 +25,13 @@ export class HomeComponent {
   filterResults(text: string, $event: Event) {
     $event.preventDefault();
 
-    let numPosts = 12;
+    let numPosts = 0;
     const formData = new FormData($event.target as HTMLFormElement);
     const value = formData.get('radioGroup');
 
     switch(value) {
       case '1':
+      default:
         numPosts = 12;
         break;
       case '2':

@@ -16,24 +16,25 @@ export class DetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   postsService = inject(PostsService);
   postList: Postlist | undefined;
-  applyForm = new FormGroup({
+  commentForm = new FormGroup({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     email: new FormControl(''),
   });
 
   constructor() {
-    const postId = parseInt(this.route.snapshot.params['id'], 10);
-    this.postsService.getPostById(postId).subscribe(postList => {
+    const postSlug = this.route.snapshot.params['slug'];
+    this.postsService.getPostBySlug(postSlug).subscribe(postList => {
+      //console.log(postList);
       this.postList = postList;
     });
   }
 
-  submitApplication() {
-    this.postsService.submitApplication(
-      this.applyForm.value.firstName ?? '',
-      this.applyForm.value.lastName ?? '',
-      this.applyForm.value.email ?? '',
-    );
+  submitComment() {
+    // this.postsService.submitApplication(
+    //   this.applyForm.value.firstName ?? '',
+    //   this.applyForm.value.lastName ?? '',
+    //   this.applyForm.value.email ?? '',
+    // );
   }
 }
