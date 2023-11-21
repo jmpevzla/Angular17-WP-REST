@@ -3,7 +3,7 @@ import { HttpClient } from  '@angular/common/http';
 import { switchMap, map } from 'rxjs/operators';
 import { Observable, forkJoin, catchError
   , EMPTY, defaultIfEmpty, of } from 'rxjs'
-import { Postlist, WPPost } from './postlist';
+import { Postlist, WPPost, Comment, WPComment } from './postlist';
 
 @Injectable({
   providedIn: 'root'
@@ -155,7 +155,31 @@ export class PostsService {
             );
           }
 
-          return forkJoin([authorRequest, photoRequest]).pipe(
+          const commentsRequest = this.http.get(this.url + `/wp/v2/comments?post=${post.id}&per_page=99`)
+            .pipe(
+              map((comments: any) => {
+                const cs: WPComment[] = comments;
+                console.log(cs)
+
+                const xres: Comment[] = cs.map(comment => {
+                  return {
+                    ...comment,
+                    author_avatar_url: comment.author_avatar_urls[48],
+                    content: comment.content.rendered,
+                    date: this.formatFullDate(new Date(comment.date))
+                  } as Comment;
+                });
+                data.num_comments = xres.length;
+                data.comments = xres;
+              })
+          ).pipe(
+            catchError((err: any) => {
+              console.log(err)
+              return EMPTY.pipe(defaultIfEmpty(null));
+            })
+        );
+
+          return forkJoin([authorRequest, photoRequest, commentsRequest]).pipe(
             map(() => data)
           );
         })

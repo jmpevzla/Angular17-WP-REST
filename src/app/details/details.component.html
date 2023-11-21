@@ -40,6 +40,23 @@
     <section class="listing-content" [innerHTML]="postList.content">
     </section>
 
+    <section class="listing-comments">
+      <p>No. Comments: {{ postList.num_comments }}</p>
+      <div class="listing-comment"
+        *ngFor="let comment of postList.comments">
+
+        <div class="listing-comment-intro">
+          <p>{{ comment.author_name }}</p>
+          <img [src]="comment.author_avatar_url" alt="author comment avatar" />
+          <p>{{ comment.date }}</p>
+        </div>
+
+        <div [innerHTML]="comment.content">
+        </div>
+
+      </div>
+    </section>
+
     <!-- <img
       class="listing-photo"
       [src]="postList?.photo"

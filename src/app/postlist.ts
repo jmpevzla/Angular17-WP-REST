@@ -9,6 +9,22 @@
 //   laundry: boolean;
 // }
 
+export interface Comment {
+  id: number;
+  author_avatar_url: string;
+  author_name: string;
+  content: string;
+  date: string;
+}
+
+export interface WPComment {
+  id: number;
+  author_avatar_urls: { 24: string; 48: string, 96: string };
+  author_name: string;
+  content: { rendered: string };
+  date: string;
+}
+
 export interface Postlist {
   id: number;
   slug: string;
@@ -19,6 +35,7 @@ export interface Postlist {
   date: string;
   photo: string;
   num_comments: number;
+  comments?: Comment[];
 }
 
 export interface WPPost {
