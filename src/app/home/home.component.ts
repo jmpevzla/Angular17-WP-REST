@@ -15,10 +15,13 @@ export class HomeComponent {
   postsService: PostsService = inject(PostsService);
   filteredPostsList: Postlist[] = [];
   postsHidden: Boolean = false;
+  postsLoading: Boolean = false;
 
   constructor() {
+    this.postsLoading = true;
     this.postsService.getAllPosts().subscribe(postsList => {
       this.filteredPostsList = postsList;
+      this.postsLoading = false;
     });
   }
 
@@ -43,10 +46,11 @@ export class HomeComponent {
     }
 
     this.postsHidden = true;
-
+    this.postsLoading = true;
     this.postsService.getAllPosts(text, numPosts).subscribe(postsList => {
       this.postsHidden = false;
       this.filteredPostsList = postsList;
+      this.postsLoading = false;
     });
 
   }

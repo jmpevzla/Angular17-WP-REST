@@ -16,6 +16,8 @@ export class DetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   postsService = inject(PostsService);
   postList: Postlist | undefined;
+  postLoading: Boolean = false;
+
   commentForm = new FormGroup({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
@@ -23,10 +25,12 @@ export class DetailsComponent {
   });
 
   constructor() {
+    this.postLoading = true;
     const postSlug = this.route.snapshot.params['slug'];
     this.postsService.getPostBySlug(postSlug).subscribe(postList => {
       //console.log(postList);
       this.postList = postList;
+      this.postLoading = false;
     });
   }
 

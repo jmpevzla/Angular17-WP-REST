@@ -23,8 +23,23 @@
       <span>Posts</span>
     </div>
   </form>
-
 </section>
+
+@if(postsLoading) {
+  <div class="spinner">
+    <div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+}
+
 <section class="results">
   <app-post-list
     [ngClass]="{'post-hidden': postsHidden}"
