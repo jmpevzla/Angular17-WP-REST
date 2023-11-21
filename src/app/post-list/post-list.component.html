@@ -7,6 +7,10 @@
         alt="foto destacada de {{ postList.title }}"
         crossorigin
       />
+      @if(postList.num_comments > 0) {
+        <p class="listing-comments">{{ postList.num_comments }}</p>
+      }
+
       <h2 class="listing-heading">{{ postList.title }}</h2>
       <p class="listing-content" [innerHTML]="postList.content"></p>
       <p class="listing-info">

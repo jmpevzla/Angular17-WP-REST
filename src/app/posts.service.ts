@@ -68,6 +68,7 @@ export class PostsService {
               author: '',
               photo: this.photoDefault,
               date: this.formatDate(new Date(post.date)),
+              num_comments: 0,
             }
 
             const authorRequest = this.http.get(this.url + `/wp/v2/users/${post.author}?_fields=name`)
@@ -87,7 +88,20 @@ export class PostsService {
               );
             }
 
-            return forkJoin([authorRequest, photoRequest]).pipe(
+
+            const commentsRequest = this.http.get(this.url + `/wp/v2/comments?post=${post.id}&per_page=99`)
+              .pipe(
+                map((comments: any) => {
+                  data.num_comments = comments.length;
+                })
+            ).pipe(
+              catchError((err: any) => {
+                console.log(err)
+                return EMPTY.pipe(defaultIfEmpty(null));
+              })
+            );
+
+            return forkJoin([authorRequest, photoRequest, commentsRequest]).pipe(
               map(() => data)
             );
 
@@ -120,6 +134,7 @@ export class PostsService {
             author: '',
             photo: this.photoDefault,
             date: this.formatFullDate(new Date(post.date)),
+            num_comments: 0,
           }
 
           const authorRequest = this.http.get(this.url + `/wp/v2/users/${post.author}?_fields=name,avatar_urls`)

@@ -18,6 +18,7 @@ export interface Postlist {
   author_photo?: string;
   date: string;
   photo: string;
+  num_comments: number;
 }
 
 export interface WPPost {
