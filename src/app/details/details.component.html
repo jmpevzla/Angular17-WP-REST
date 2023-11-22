@@ -40,6 +40,49 @@
     <section class="listing-content" [innerHTML]="postList.content">
     </section>
 
+    <section class="listing-post">
+      <h2>Post a Comment</h2>
+      <p class="lp-text-info">Your email address will not be published. Required fields are marked with *.</p>
+      <form #ngForm class="lp-form" [formGroup]="commentForm"
+        (submit)="submitComment($event, ngForm)">
+        <div>
+          <label for="lp-comment">Comment *</label>
+          <textarea id="lp-comment"
+            rows="4" cols="4"
+            formControlName="comment"
+            required
+            ></textarea>
+        </div>
+
+        <div>
+          <label for="lp-name">Nombre *</label>
+          <input type="text" id="lp-name"
+            formControlName="name"
+            required
+            />
+        </div>
+
+        <div>
+          <label for="lp-correo">Correo *</label>
+          <input type="email" id="lp-correo"
+            formControlName="email"
+            required
+            />
+        </div>
+
+        <div>
+          <label for="lp-web">Web</label>
+          <input type="url" id="lp-web"
+            formControlName="web"
+            />
+        </div>
+
+        <div>
+          <button type="submit" class="primary">Post Comment</button>
+        </div>
+      </form>
+    </section>
+
     <section class="listing-comments">
       <p>No. Comments: {{ postList.num_comments }}</p>
       <div class="listing-comment"

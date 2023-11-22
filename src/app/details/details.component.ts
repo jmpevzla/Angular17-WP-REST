@@ -19,9 +19,10 @@ export class DetailsComponent {
   postLoading: Boolean = false;
 
   commentForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
+    comment: new FormControl(''),
+    name: new FormControl(''),
     email: new FormControl(''),
+    web: new FormControl(''),
   });
 
   constructor() {
@@ -34,11 +35,18 @@ export class DetailsComponent {
     });
   }
 
-  submitComment() {
-    // this.postsService.submitApplication(
-    //   this.applyForm.value.firstName ?? '',
-    //   this.applyForm.value.lastName ?? '',
-    //   this.applyForm.value.email ?? '',
-    // );
+  submitComment(ev: SubmitEvent, form: HTMLFormElement) {
+    //ev.preventDefault();
+    if (form.checkValidity()) {
+      this.postsService.submitApplication(
+        this.postList!.id,
+        this.commentForm.value.comment!,
+        this.commentForm.value.name!,
+        this.commentForm.value.email!,
+        this.commentForm.value.web ?? ''
+      )
+    } else {
+      form.reportValidity();
+    }
   }
 }

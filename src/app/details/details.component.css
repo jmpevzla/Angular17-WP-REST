@@ -64,6 +64,13 @@
   margin-bottom: 10px;
 }
 
+.listing-post {
+  margin-top: 20px;
+}
+
+.lp-text-info {
+  margin-block: 20px;
+}
 
 .listing-features > .section-heading {
   color: var(--secondary-color);
@@ -104,6 +111,18 @@ input {
   margin-top: 5px;
 }
 input:focus {
+  outline: solid 2px var(--primary-color);
+}
+
+textarea {
+  font-size: 14pt;
+  margin-bottom: 15px;
+  padding: 10px;
+  width: 400px;
+  border: solid .3px;
+  margin-top: 5px;
+}
+textarea:focus {
   outline: solid 2px var(--primary-color);
 }
 button {

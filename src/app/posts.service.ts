@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from  '@angular/common/http';
+import { HttpClient, HttpHeaders } from  '@angular/common/http';
 import { switchMap, map } from 'rxjs/operators';
 import { Observable, forkJoin, catchError
   , EMPTY, defaultIfEmpty, of } from 'rxjs'
@@ -159,7 +159,6 @@ export class PostsService {
             .pipe(
               map((comments: any) => {
                 const cs: WPComment[] = comments;
-                console.log(cs)
 
                 const xres: Comment[] = cs.map(comment => {
                   return {
@@ -186,9 +185,33 @@ export class PostsService {
       );
   }
 
-  submitApplication(firstName: string, lastName: string, email: string) {
-    console.log(
-      `Homes application received: firstName: ${firstName}, lastName: ${lastName}, email: ${email}.`,
-    );
+  submitApplication(postId: number, comment: string, name: string, email: string, web: string) {
+    const commentData = {
+      post: postId,
+      author_name: name,
+      author_email: email,
+      author_url: web,
+      content: comment,
+    };
+
+    const username = '';
+    const password = '';
+    const base64Authorization = btoa(username + ':' + password);
+
+    // Construye los encabezados
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + base64Authorization
+    });
+
+    this.http.post(this.url + `/wp/v2/comments`, commentData, { headers }).subscribe({
+      next: response => {
+        console.log(response);
+        alert('comment pending approval')
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
   }
 }
