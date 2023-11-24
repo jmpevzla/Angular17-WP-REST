@@ -7,13 +7,14 @@
 }
 
 .container-photo {
-  margin: 20px;
+  margin: 20px;;
   /* display: flex;
   justify-content: center; */
 }
 
 .listing-photo {
   display: block;
+  margin: auto;
   height: 250px;
   min-width: 200px;
   /*width: 40%;*/
@@ -48,10 +49,17 @@
 
 .listing-content {
   margin-top: 40px;
+  padding: 20px;
+  display: flex;
 }
 
 .listing-comments {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
+  word-break: break-word;
 }
 
 .listing-comment {
@@ -65,7 +73,11 @@
 }
 
 .listing-post {
-  margin-top: 20px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .lp-text-info {

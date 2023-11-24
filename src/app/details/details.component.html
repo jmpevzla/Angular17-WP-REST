@@ -37,7 +37,8 @@
       </div>
     </section>
 
-    <section class="listing-content" [innerHTML]="postList.content">
+    <section class="listing-content">
+      <div [innerHTML]="htmlContent"></div>
     </section>
 
     <section class="listing-post">
@@ -78,13 +79,30 @@
         </div>
 
         <div>
-          <button type="submit" class="primary">Post Comment</button>
+          @if(!CommentSending) {
+            <button type="submit" class="primary">Post Comment</button>
+          } @else {
+            <div class="spinner">
+              <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          }
         </div>
       </form>
     </section>
 
     <section class="listing-comments">
-      <p>No. Comments: {{ postList.num_comments }}</p>
+      <div>
+        <p>No. Comments: {{ postList.num_comments }}</p>
+      </div>
       <div class="listing-comment"
         *ngFor="let comment of postList.comments">
 

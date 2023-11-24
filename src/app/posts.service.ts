@@ -4,6 +4,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { Observable, forkJoin, catchError
   , EMPTY, defaultIfEmpty, of } from 'rxjs'
 import { Postlist, WPPost, Comment, WPComment } from './postlist';
+import { environment } from '../environments/enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -185,7 +186,8 @@ export class PostsService {
       );
   }
 
-  submitApplication(postId: number, comment: string, name: string, email: string, web: string) {
+  submitApplication(postId: number, comment: string, name: string,
+      email: string, web: string, cb: Function) {
     const commentData = {
       post: postId,
       author_name: name,
@@ -194,24 +196,28 @@ export class PostsService {
       content: comment,
     };
 
-    const username = '';
-    const password = '';
-    const base64Authorization = btoa(username + ':' + password);
+    //const username = '';
+    //const password = '';
+    //const base64Authorization = btoa(username + ':' + password);
 
     // Construye los encabezados
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + base64Authorization
+      'Authorization': 'Bearer ' + environment.appToken,
     });
 
-    this.http.post(this.url + `/wp/v2/comments`, commentData, { headers }).subscribe({
+    const request = this.http.post(this.url + `/wp/v2/comments`, commentData, { headers });
+
+    request.subscribe({
       next: response => {
         console.log(response);
-        alert('comment pending approval')
+        cb();
       },
       error: error => {
         console.log(error);
       }
     });
+
+    return request;
   }
 }
