@@ -36,6 +36,7 @@ export interface Postlist {
   photo: string;
   num_comments: number;
   comments?: Comment[];
+  comment_status?: boolean;
 }
 
 export interface WPPost {
@@ -50,4 +51,5 @@ export interface WPPost {
   author: number;
   date: string;
   featured_media: number;
+  comment_status: string;
 }

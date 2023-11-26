@@ -25,7 +25,7 @@
           alt="avatar of {{ postList.author }}"
           crossorigin
         />
-        <p class="listing-author">By {{ postList.author }}. {{ postList.date }}</p>
+        <p class="listing-author">By <strong>{{ postList.author }}</strong>. {{ postList.date }}</p>
       </div>
       <div class="container-photo">
         <img
@@ -41,112 +41,82 @@
       <div [innerHTML]="htmlContent"></div>
     </section>
 
-    <section class="listing-post">
-      <h2>Post a Comment</h2>
-      <p class="lp-text-info">Your email address will not be published. Required fields are marked with *.</p>
-      <form #ngForm class="lp-form" [formGroup]="commentForm"
-        (submit)="submitComment($event, ngForm)">
-        <div>
-          <label for="lp-comment">Comment *</label>
-          <textarea id="lp-comment"
-            rows="4" cols="4"
-            formControlName="comment"
-            required
-            ></textarea>
-        </div>
+    @if (postList.comment_status) {
+      <section class="listing-post">
+        <h2>Post a Comment</h2>
+        <p class="lp-text-info">Your email address will not be published. Required fields are marked with *.</p>
+        <form #ngForm class="lp-form" [formGroup]="commentForm"
+          (submit)="submitComment($event, ngForm)">
+          <div>
+            <label for="lp-comment">Comment *</label>
+            <textarea id="lp-comment"
+              rows="4" cols="4"
+              formControlName="comment"
+              required
+              ></textarea>
+          </div>
 
-        <div>
-          <label for="lp-name">Nombre *</label>
-          <input type="text" id="lp-name"
-            formControlName="name"
-            required
-            />
-        </div>
+          <div>
+            <label for="lp-name">Nombre *</label>
+            <input type="text" id="lp-name"
+              formControlName="name"
+              required
+              />
+          </div>
 
-        <div>
-          <label for="lp-correo">Correo *</label>
-          <input type="email" id="lp-correo"
-            formControlName="email"
-            required
-            />
-        </div>
+          <div>
+            <label for="lp-correo">Correo *</label>
+            <input type="email" id="lp-correo"
+              formControlName="email"
+              required
+              />
+          </div>
 
-        <div>
-          <label for="lp-web">Web</label>
-          <input type="url" id="lp-web"
-            formControlName="web"
-            />
-        </div>
+          <div>
+            <label for="lp-web">Web</label>
+            <input type="url" id="lp-web"
+              formControlName="web"
+              />
+          </div>
 
-        <div>
-          @if(!CommentSending) {
-            <button type="submit" class="primary">Post Comment</button>
-          } @else {
-            <div class="spinner">
-              <div class="lds-roller">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+          <div>
+            @if(!CommentSending) {
+              <button type="submit" class="primary">Post Comment</button>
+            } @else {
+              <div class="spinner">
+                <div class="lds-roller">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
               </div>
-            </div>
-          }
-        </div>
-      </form>
-    </section>
+            }
+          </div>
+        </form>
+      </section>
+    }
 
     <section class="listing-comments">
-      <div>
-        <p>No. Comments: {{ postList.num_comments }}</p>
+      <div class="listing-comments-count">
+        <p>{{ postList.num_comments }} Comments</p>
       </div>
       <div class="listing-comment"
         *ngFor="let comment of postList.comments">
 
         <div class="listing-comment-intro">
-          <p>{{ comment.author_name }}</p>
+          <p>{{ comment.author_name }} [{{ comment.date }}]</p>
           <img [src]="comment.author_avatar_url" alt="author comment avatar" />
-          <p>{{ comment.date }}</p>
         </div>
 
-        <div [innerHTML]="comment.content">
+        <div class="listing-comment-content" [innerHTML]="comment.content">
         </div>
 
       </div>
     </section>
-
-    <!-- <img
-      class="listing-photo"
-      [src]="postList?.photo"
-      alt="Exterior photo of {{ postList?.name }}"
-      crossorigin
-    />
-    <section class="listing-description">
-      <h2 class="listing-heading">{{ postList?.name }}</h2>
-      <p class="listing-location">{{ postList?.city }}, {{ postList?.state }}</p>
-    </section>
-    <section class="listing-features">
-      <h2 class="section-heading">About this housing location</h2>
-      <ul>
-        <li>Units available: {{ postList?.availableUnits }}</li>
-        <li>Does this location have wifi: {{ postList?.wifi }}</li>
-        <li>Does this location have laundry: {{ postList?.laundry }}</li>
-      </ul>
-    </section>
-    <section class="listing-apply">
-      <h2 class="section-heading">Apply now to live here</h2>
-      <form [formGroup]="applyForm" (submit)="submitApplication()">
-        <label for="first-name">First Name</label>
-        <input id="first-name" type="text" formControlName="firstName" />
-        <label for="last-name">Last Name</label>
-        <input id="last-name" type="text" formControlName="lastName" />
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" />
-        <button type="submit" class="primary">Apply now</button>
-      </form>
-    </section> -->
   </article>
 }

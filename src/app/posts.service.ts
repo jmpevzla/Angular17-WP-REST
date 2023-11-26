@@ -119,7 +119,7 @@ export class PostsService {
   }
 
   getPostBySlug(slug: string): Observable<Postlist | undefined> {
-    return this.http.get<WPPost[]>(this.url + `/wp/v2/posts?slug=${slug}&_fields=id,slug,title,author,content,featured_media,date`)
+    return this.http.get<WPPost[]>(this.url + `/wp/v2/posts?slug=${slug}&_fields=id,slug,title,author,content,featured_media,comment_status,date`)
       .pipe(
         switchMap((posts: WPPost[]) => {
           if (posts.length == 0) {
@@ -136,6 +136,7 @@ export class PostsService {
             photo: this.photoDefault,
             date: this.formatFullDate(new Date(post.date)),
             num_comments: 0,
+            comment_status: post.comment_status == 'open',
           }
 
           const authorRequest = this.http.get(this.url + `/wp/v2/users/${post.author}?_fields=name,avatar_urls`)
